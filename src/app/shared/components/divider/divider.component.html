@@ -1,0 +1,11 @@
+<div class="flex flex-row items-center">
+  <div class="flex-1 h-[1px] bg-gray-300 dark:bg-gray-600">
+  </div>
+  @if (hasText()) {
+    <div class="p-2 text-xs text-gray-400 dark:text-gray-500">
+      {{ text }}
+    </div>
+    <div class="flex-1 h-[1px] bg-gray-300 dark:bg-gray-600">
+    </div>
+  }
+</div>
