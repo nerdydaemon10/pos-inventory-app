@@ -1,5 +1,5 @@
-import { definePreset } from "@primeng/themes"
 import Aura from "@primeng/themes/Aura"
+import { definePreset } from "@primeng/themes"
 
 // setting Aura as theme, and blue as primary color
 const Preset = definePreset(Aura, {

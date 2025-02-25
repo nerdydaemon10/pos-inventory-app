@@ -40,3 +40,20 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Custom
+# .angular
+# .vscode
+# public
+# .editorconfig
+# package-lock.json
+# package.json
+# README.md
+# tailwind.config.js
+# tsconfig.app.json
+# tsconfig.json
+# tsconfig.spec.json
+# *.spec.ts
+# *.css
+
+# Custom: Module Focus
