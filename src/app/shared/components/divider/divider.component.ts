@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { Component, Input } from '@angular/core'
 
 @Component({
-  selector: 'app-divider',
+  selector: 'pos-divider',
   imports: [],
   templateUrl: './divider.component.html',
   styleUrl: './divider.component.css'
