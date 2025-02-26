@@ -9,9 +9,7 @@ export const networkInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (!error.status) {
-        toaster.error(
-          'Our server is unavailable, please try again.'
-        )
+        toaster.error('Our server is unavailable, please try again.')
       }
       throw error
     })
