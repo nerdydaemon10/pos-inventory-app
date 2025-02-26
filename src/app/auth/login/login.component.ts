@@ -40,6 +40,7 @@ export class LoginComponent {
     })
     effect(() => {
       if (this.login.success) {
+        this.toaster.success(this.login.message)
         this.router.navigate(["dashboard"])
       }
     })
