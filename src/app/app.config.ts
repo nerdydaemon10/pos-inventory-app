@@ -5,11 +5,11 @@ import { provideZoneChangeDetection, ApplicationConfig } from '@angular/core'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
 
-import { routes } from './app.routes'
 import { theme } from './app.theme'
-import { normalizerInterceptor } from './core/interceptors/normalizer.interceptor'
+import { routes } from './app.routes'
+import { provideConsts } from './core/constants.provider'
 import { networkInterceptor } from './core/interceptors/network.interceptor'
-import { provideConstsProvider } from './core/constants.provider'
+import { normalizerInterceptor } from './core/interceptors/normalizer.interceptor'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideRouter(routes),
     providePrimeNG(theme), // set theme
-    provideConstsProvider(),
+    provideConsts(),
     MessageService
   ],
 };
