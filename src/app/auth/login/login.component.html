@@ -2,13 +2,13 @@
   <section>
     <h1 class="text-3xl font-bold">Login</h1>
     <p class="text-muted-color mb-2">Welcome back, login now to proceed!</p>
-    @if (login.hasError()) {
+    @if (store.isInvalidCredentials()) {
       <div class="my-2">
         <p-message severity="error">
           <span>
             <i class="bx bx-error"></i>
           </span>
-          {{ login.message() }}
+          {{ login.message }}
         </p-message>
       </div>
     }
@@ -40,7 +40,7 @@
       </div>
       <p-button 
         [fluid]="true"
-        [loading]="login.loading()"
+        [loading]="login.loading"
         [disabled]="form.invalid"
         type="submit"
         label="Login"

@@ -1,15 +1,15 @@
-import { Component, effect, inject } from '@angular/core'
+import { Router } from '@angular/router'
 import { ButtonModule } from 'primeng/button'
 import { CheckboxModule } from 'primeng/checkbox'
 import { InputTextModule } from 'primeng/inputtext'
+import { Component, effect, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MessageModule } from 'primeng/message'
 import { PasswordModule } from 'primeng/password';
 
-import { DividerComponent } from '../../shared/components/divider/divider.component'
-import { LoginStore } from './login.store'
-import { Router } from '@angular/router'
 import { ToasterStore } from '../../shared/stores/toaster.store'
+import { AuthStore, LoginState } from '../auth.store'
+import { DividerComponent } from '../../shared/components/divider/divider.component'
 
 @Component({
   selector: 'pos-login',
@@ -27,7 +27,7 @@ import { ToasterStore } from '../../shared/stores/toaster.store'
 })
 export class LoginComponent { 
   protected form!: FormGroup
-  protected readonly login = inject(LoginStore)
+  protected readonly store = inject(AuthStore)
   protected readonly toaster = inject(ToasterStore)
 
   constructor(
@@ -39,13 +39,17 @@ export class LoginComponent {
       password: ['', Validators.required]
     })
     effect(() => {
-      if (this.login.success()) {
+      if (this.login.success) {
         this.router.navigate(["dashboard"])
       }
     })
   }
 
   protected onSubmit(): void {
-    this.login.submit(this.form.value)
+    this.store.submit(this.form.value)
+  }
+
+  protected get login(): LoginState {
+    return this.store.login()
   }
 }
