@@ -1,0 +1,112 @@
+@for (menu of menus; track menu.name) {
+  <ng-container *ngTemplateOutlet="isMenuTitle(menu) ? menutitle : menuitem; context: { $implicit: menu }"></ng-container>
+}
+<ng-template #menutitle let-menu>
+  <div class="px-4 py-2">
+    <h1 class="text-blue-300 dark:text-surface-500 text-xs font-semibold">{{ menu.name }}</h1>
+  </div>
+  @if (hasItems(menu)) {
+    <pos-sidebar-menu 
+      [menus]="menu.items"
+      (toggle)="toggle.emit($event)"
+      (navigate)="navigate.emit($event)"
+    ></pos-sidebar-menu>
+  }
+</ng-template>
+
+<ng-template #menuitem let-menu>
+  <div
+    pRipple
+    (click)="click($event, menu)"
+    [class]="{ 
+      'text-blue-200': !menu.active, 
+      'text-white': menu.active,
+      'dark:text-surface-400': !menu.active
+    }"
+    class="flex flex-row justify-between items-center px-4 py-1 text-sm font-medium hover:text-white cursor-pointer"
+  >
+    <div class="flex flex-row items-center gap-2">
+      <span class="text-lg relative top-[1px]">
+        <i [class]="'bx' + ( menu.active ? 's-' : '-' ) + menu.icon" class="bx"></i>
+      </span>
+      <span>{{ menu.name }}</span>
+    </div>
+    @if (hasItems(menu)) {
+      <div 
+        [class]="{
+          'rotate-0': !menu.active,
+          'rotate-180': menu.active,
+          'ease-in': !menu.active,
+          'ease-out': menu.active,
+        }"
+        class="transition duration-300"
+      >
+        <i class='bx bxs-chevron-down'></i>
+      </div>
+    }
+  </div>
+  @if (hasItems(menu)) {
+    <div class="px-4">
+      <ng-container *ngTemplateOutlet="dropdownmenu; context: { $implicit: menu }"></ng-container>
+    </div>
+  }
+</ng-template>
+
+<ng-template #dropdownmenu let-menu>
+  <ul
+    [class]="{
+      'max-h-[0px]': !menu.active,
+      'max-h-[500px]': menu.active,
+      'ease-out': !menu.active,
+      'ease-in': menu.active
+    }"
+    class="ps-4 overflow-hidden transition-[max-height] duration-300"
+  >
+    @for(item of menu.items; track item.name) {
+      <li
+        (click)="click($event, item)"
+        [routerLink]="!hasItems(item) ? [item.route] : null"
+        class="cursor-pointer"
+      >
+        <div
+          [class]="{ 
+            'text-blue-300': !item.active, 
+            'text-white': item.active,
+            'dark:text-surface-500': !item.active
+          }"
+          class="flex flex-row justify-between items-center py-2 text-sm font-medium group hover:text-white"
+        >
+          <!-- dot -->
+          <div class="flex flex-row items-center gap-2">
+            <div 
+              [class]="{
+                'bg-blue-300': !item.active,
+                'bg-white': item.active,
+                'dark:bg-surface-500': !item.active
+              }"
+              class="size-1 rounded group-hover:bg-white"
+            ></div>
+            <!-- name -->
+            {{ item.name }}
+          </div>
+          @if (hasItems(item)) {
+            <div 
+              [class]="{
+                'rotate-0': !item.active,
+                'rotate-180': item.active,
+                'ease-in': !item.active,
+                'ease-out': item.active,
+              }"
+              class="transition duration-300"
+            >
+              <i class='bx bxs-chevron-down'></i>
+            </div>
+          }
+        </div>
+        @if (hasItems(item)) {
+          <ng-container *ngTemplateOutlet="dropdownmenu; context: { $implicit: item }"></ng-container>
+        }
+      </li>
+    }
+  </ul>
+</ng-template>
