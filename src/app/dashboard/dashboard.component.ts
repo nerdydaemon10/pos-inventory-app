@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
-import { AuthService } from '../auth/auth.service';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { HeaderComponent } from "./header/header.component";
+import { AppStore } from '../app.store';
 
 @Component({
   selector: 'pos-dashboard',
-  imports: [ButtonModule, RouterOutlet, SidebarComponent],
+  imports: [ButtonModule, RouterOutlet, SidebarComponent, HeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  constructor(private service: AuthService) {}
+  protected readonly store = inject(AppStore)
+  constructor() {}
 }
