@@ -21,6 +21,10 @@ export class SharedPrefsService {
       return obj
     }
 
+    if (_.isBoolean(obj)) {
+      return obj as boolean
+    }
+
     return data
   }
   static clear(): void {
