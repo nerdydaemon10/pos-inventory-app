@@ -1,0 +1,24 @@
+- auth
+    - login
+- dashboard
+    - overview
+- billing
+    - checkout
+- reports
+    - sales
+    - inventory
+    - supplier
+- inventory
+    - products
+    - categories
+    - brands
+    - locations
+    - batches
+    - stocks
+- suppliers
+    - suppliers
+    - purchase-orders
+- users
+    - users
+    - roles
+    - permissions
