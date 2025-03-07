@@ -3,9 +3,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
 import { MenuModule } from 'primeng/menu';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { DividerComponent } from "../../shared/components/divider/divider.component";
-
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'pos-header',
@@ -15,22 +13,23 @@ import { DividerComponent } from "../../shared/components/divider/divider.compon
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  @Input()
-  public darkMode: boolean = false
-  
-  @Output()
-  public toggle: EventEmitter<null> = new EventEmitter()
+  @Input() public darkMode: boolean = false
+  @Output() public darkModeToggle: EventEmitter<null> = new EventEmitter()
+  @Output() public logout: EventEmitter<null> = new EventEmitter()
 
-  protected onToggle(): void {
-    this.toggle.emit()
+  protected onDarkModeToggle(): void {
+    this.darkModeToggle.emit()
   }
-
-  items = [
+  
+  protected items: MenuItem[] = [
     { 
       label: 'Profile', 
       items: [
         {
-          label: 'Logout', icon: 'bx bx-log-out'
+          label: 'Logout', icon: 'bx bx-log-out',
+          command: () => {
+            this.logout.emit()
+          }
         }
       ] 
     }

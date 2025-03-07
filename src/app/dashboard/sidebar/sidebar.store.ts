@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { produce } from "immer"
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals"
+
 import { SidebarMenu } from "./sidebar-menu/sidebar-menu.type"
 
 export type SidebarType = {
@@ -20,6 +21,11 @@ const initialState: SidebarType = {
         {
           name: "POS/Checkout",
           icon: "cart-add",
+          route: "checkout"
+        },
+        {
+          name: "Sales History",
+          icon: "credit-card",
           route: "checkout"
         }
       ]
@@ -70,8 +76,8 @@ const initialState: SidebarType = {
               route: "batches"
             },
             {
-              name: "Stocks Adjustments",
-              route: "stocks-adjustment"
+              name: "Stocks",
+              route: "stocks"
             },
             {
               name: "Stock Movements",
@@ -115,74 +121,7 @@ const initialState: SidebarType = {
               route: "permissions"
             }
           ]
-        },
-        // {
-        //   name: "Sales Management",
-        //   icon: "credit-card",
-        //   route: "",
-        //   items: [
-        //     {
-        //       name: "Biling & Checkout",
-        //       route: "",
-        //       active: false,
-        //     },
-        //     {
-        //       name: "Transactions History",
-        //       route: "",
-        //       active: false,
-        //     },
-        //     {
-        //       name: "Sales Report",
-        //       route: "",
-        //       active: false,
-        //     }
-        //   ]
-        // },
-        // {
-        //   name: "Inventory Management",
-        //   icon: "grid-alt",
-        //   route: "",
-        //   active: false,
-        //   items: [
-        //     {
-        //       name: "Stocks Overview",
-        //       route: "",
-        //       active: false,
-        //     },
-        //     {
-        //       name: "Stock Movements",
-        //       route: "",
-        //       active: false,
-        //     },
-        //     {
-        //       name: "Stock Adjustments",
-        //       route: "",
-        //       active: false,
-        //     },
-        //     {
-        //       name: "Warehouse Managem.",
-        //       route: "",
-        //       active: false,
-        //     },
-        //     {
-        //       name: "Re-Order Alerts",
-        //       route: "",
-        //       active: false,
-        //       items: [
-        //         {
-        //           name: "Stock Adjustments",
-        //           route: "",
-        //           active: false,
-        //         },
-        //         {
-        //           name: "Warehouse Managem.",
-        //           route: "",
-        //           active: false,
-        //         },
-        //       ]
-        //     }
-        //   ]
-        // },
+        }
       ]
     }
   ]

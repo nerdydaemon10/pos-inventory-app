@@ -1,14 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { NgScrollbar } from 'ngx-scrollbar';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
-import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { SidebarStore } from './sidebar.store';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import _ from 'lodash';
+import { filter } from 'rxjs';
+import { NgScrollbar } from 'ngx-scrollbar';  
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+
+import { SidebarStore } from './sidebar.store';
 import { AppStore } from '../../app.store';
 import { SidebarMenuComponent } from "./sidebar-menu/sidebar-menu.component";
-import { filter } from 'rxjs';
 import { SidebarMenu } from './sidebar-menu/sidebar-menu.type';
 
 @Component({
@@ -26,8 +27,8 @@ import { SidebarMenu } from './sidebar-menu/sidebar-menu.type';
 export class SidebarComponent implements OnInit {
   protected readonly app = inject(AppStore)
   protected readonly sidebar = inject(SidebarStore)
-
-  constructor(
+  
+  constructor( 
     private router: Router,
     private route: ActivatedRoute
   ) {}
