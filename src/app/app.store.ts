@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { produce } from 'immer'
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals'
+
 import { SharedPrefsService } from './core/services/shared-prefs.service'
 
 type AppState = {
@@ -17,7 +18,7 @@ export const AppStore = signalStore(
   withMethods((
     store
   ) => ({
-    toggleDarkMode: (): void => {
+    darkModeToggle: (): void => {
       patchState(store, (state) => {
         return produce(state, (draft) => {
           draft.darkMode = !draft.darkMode
