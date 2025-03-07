@@ -3,8 +3,9 @@
   <!-- RIGHT-SECTION -->
   <div class="flex-1 flex flex-col">
     <pos-header 
-      [darkMode]="store.darkMode()"
-      (toggle)="store.toggleDarkMode()"
+      [darkMode]="app.darkMode()"
+      (darkModeToggle)="app.darkModeToggle()"
+      (logout)="logout()"
     />
     <main class="flex-1 p-4">
       <router-outlet></router-outlet>
