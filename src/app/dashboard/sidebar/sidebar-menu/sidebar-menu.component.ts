@@ -1,9 +1,10 @@
 import _ from 'lodash';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { SidebarMenu } from './sidebar-menu.type';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'pos-sidebar-menu',
@@ -16,7 +17,6 @@ export class SidebarMenuComponent {
   public menus: SidebarMenu[] = []
   @Output()
   public toggle = new EventEmitter()
-
   @Output()
   public navigate = new EventEmitter()
 
