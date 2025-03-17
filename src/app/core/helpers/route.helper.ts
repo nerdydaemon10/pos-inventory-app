@@ -1,7 +1,7 @@
+import _ from "lodash"
+
 export class RouteHelper {
-  public static toRoutes(url: string): string[] {
-    const routes = url.split("/")
-    const excludes = ["", "dashboard"]
-    return routes.filter(route => !excludes.includes(route))
+  public static transformUrl(url: string): string {
+    return url.replace("/dashboard", "").replace(/^\/*/, '')
   }
 }
