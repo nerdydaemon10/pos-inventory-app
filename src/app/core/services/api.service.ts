@@ -1,6 +1,7 @@
 import { Inject } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { catchError, map, Observable, of } from "rxjs";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+
 import { BASE_URL } from "../constants.provider";
 
 export abstract class ApiService {

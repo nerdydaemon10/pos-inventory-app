@@ -3,6 +3,7 @@ import { produce } from "immer"
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals"
 
 import { SidebarMenu } from "./sidebar-menu/sidebar-menu.type"
+import { RouteHelper } from "../../core/helpers/route.helper"
 
 export type SidebarType = {
   menus: SidebarMenu[]
@@ -17,71 +18,119 @@ const initialState: SidebarType = {
           name: "Overview",
           icon: "tachometer",
           route: "",
+          active: false,
+          open: false,
+          touched: false
         },
         {
           name: "POS/Checkout",
           icon: "cart-add",
-          route: "checkout"
+          route: "checkout",
+          active: false,
+          open: false,
+          touched: false
         },
         {
           name: "Sales History",
           icon: "credit-card",
-          route: "checkout"
+          route: "checkout",
+          active: false,
+          open: false,
+          touched: false
         }
       ]
     },
     {
       name: "Main Menu",
+      active: false,
+      open: false,
+      touched: false,
       items: [
         {
           name: "Reports & Analytics",
           icon: "bar-chart-alt-2",
+          active: false,
+          open: false,
+          touched: false,
           items: [
             {
               name: "Sales Reports",
-              route: "sales"
+              route: "sales",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Inventory Reports",
-              route: "inventory"
+              route: "inventory",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Supplier Reports",
-              route: "suppliers"
+              route: "suppliers",
+              active: false,
+              open: false,
+              touched: false
             }
           ]
         },
         {
           name: "Inventory Management",
           icon: "grid-alt",
+          active: false,
+          open: false,
+          touched: false,
           items: [
             {
               name: "Products",
-              route: "products"
+              route: "inventory/products",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Categories",
-              route: "categories"
+              route: "categories",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Brands",
-              route: "brands"
+              route: "brands",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Locations",
-              route: "locations"
+              route: "locations",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Batches",
-              route: "batches"
+              route: "batches",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Stocks",
-              route: "stocks"
+              route: "stocks",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Stock Movements",
-              route: "stock-movement"
+              route: "stock-movement",
+              active: false,
+              open: false,
+              touched: false
             }
           ]
         },
@@ -89,36 +138,60 @@ const initialState: SidebarType = {
           name: "Supplier Management",
           icon: "package",
           route: "damage",
+          active: false,
+          open: false,
+          touched: false,
           items: [
             {
               name: "Suppliers",
               route: "suppliers",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Purchased Orders",
-              route: "purchased-orders"
+              route: "purchased-orders",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Re-order Alerts",
-              route: "re-order-alerts"
+              route: "re-order-alerts",
+              active: false,
+              open: false,
+              touched: false
             }
           ]
         },
         {
           name: "User Management",
           icon: "cog",
+          active: false,
+          open: false,
+          touched: false,
           items: [
             {
               name: "Users",
-              route: "users"
+              route: "users",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Roles",
-              route: "roles"
+              route: "roles",
+              active: false,
+              open: false,
+              touched: false
             },
             {
               name: "Permissions",
-              route: "permissions"
+              route: "permissions",
+              active: false,
+              open: false,
+              touched: false
             }
           ]
         }
@@ -169,7 +242,12 @@ const toggleMenuItemsRecursively = (menus: SidebarMenu[], menu: SidebarMenu): Si
     }
 
     clone = produce(clone, (draft: SidebarMenu) => {
-      draft.active = !draft.active
+      if (!draft.touched && draft.active) {
+        draft.open = draft.active
+      }
+      
+      draft.open = !draft.open // enabled toggle when sidebar item is clicked
+      draft.touched = true
     })
 
     return clone
@@ -180,11 +258,10 @@ export const SidebarStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods((store) => ({
-    init: (url: string): void => {
-      let routes = url.split("/").map(route => route == "dashboard" ? "" : route)
-      let route = _.last(routes)
+    activate: (url: string): void => {
+      let route = RouteHelper.transformUrl(url);
 
-      if (_.isNil(route)) {
+      if (_.isNil(url)) {
         return
       }
       

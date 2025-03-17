@@ -1,9 +1,9 @@
 @for (menu of menus; track menu.name) {
-  <ng-container *ngTemplateOutlet="isMenuTitle(menu) ? menutitle : menuitem; context: { $implicit: menu }"></ng-container>
+  <ng-container *ngTemplateOutlet="isTitle(menu) ? menutitle : menuitem; context: { $implicit: menu }"></ng-container>
 }
 <ng-template #menutitle let-menu>
   <div class="px-4 py-2">
-    <h1 class="text-blue-300 dark:text-surface-500 text-xs font-semibold">{{ menu.name }}</h1>
+    <h1 class="text-primary-300 dark:text-surface-500 text-xs font-semibold">{{ menu.name }}</h1>
   </div>
   @if (hasItems(menu)) {
     <pos-sidebar-menu 
@@ -19,27 +19,27 @@
     pRipple
     (click)="click($event, menu)"
     [class]="{ 
-      'text-blue-200': !menu.active, 
-      'text-white': menu.active,
-      'dark:text-surface-400': !menu.active
+      'text-primary-200': !isActive(menu),
+      'text-white': isActive(menu),
+      'dark:text-surface-400': !isActive(menu)
     }"
-    class="flex flex-row justify-between items-center px-4 py-1 text-sm font-medium hover:text-white cursor-pointer"
+    class="flex flex-row justify-between items-center px-4 py-1 text-sm font-medium hover:text-white cursor-pointer transition duration-150 ease-in-out"
   >
     <div class="flex flex-row items-center gap-2">
       <span class="text-lg relative top-[1px]">
-        <i [class]="'bx' + ( menu.active ? 's-' : '-' ) + menu.icon" class="bx"></i>
+        <i [class]="'bx' + ( isActive(menu) ? 's-' : '-' ) + menu.icon" class="bx"></i>
       </span>
       <span>{{ menu.name }}</span>
     </div>
     @if (hasItems(menu)) {
       <div 
         [class]="{
-          'rotate-0': !menu.active,
-          'rotate-180': menu.active,
-          'ease-in': !menu.active,
-          'ease-out': menu.active,
+          'rotate-0': !menu.open,
+          'rotate-180': isOpen(menu),
+          'ease-in': isOpen(menu),
+          'ease-out': !menu.open,
         }"
-        class="transition duration-300"
+        class="transition duration-150"
       >
         <i class='bx bxs-chevron-down'></i>
       </div>
@@ -55,10 +55,10 @@
 <ng-template #dropdownmenu let-menu>
   <ul
     [class]="{
-      'max-h-[0px]': !menu.active,
-      'max-h-[500px]': menu.active,
-      'ease-out': !menu.active,
-      'ease-in': menu.active
+      'max-h-[0px]': !menu.open,
+      'max-h-[500px]': isOpen(menu),
+      'ease-in': isOpen(menu),
+      'ease-out': !menu.open
     }"
     class="ps-4 overflow-hidden transition-[max-height] duration-300"
   >
@@ -70,21 +70,21 @@
       >
         <div
           [class]="{ 
-            'text-blue-300': !item.active, 
-            'text-white': item.active,
-            'dark:text-surface-500': !item.active
+            'text-primary-300': !isActive(item), 
+            'text-white': isActive(item),
+            'dark:text-surface-500': !isActive(item)
           }"
-          class="flex flex-row justify-between items-center py-2 text-sm font-medium group hover:text-white"
+          class="flex flex-row justify-between items-center py-2 text-sm font-medium group hover:text-white transition duration-150 ease-in-out"
         >
           <!-- dot -->
           <div class="flex flex-row items-center gap-2">
             <div 
               [class]="{
-                'bg-blue-300': !item.active,
-                'bg-white': item.active,
-                'dark:bg-surface-500': !item.active
+                'bg-primary-300': !isActive(item),
+                'bg-white': isActive(item),
+                'dark:bg-surface-500': !isActive(item)
               }"
-              class="size-1 rounded group-hover:bg-white"
+              class="size-1 rounded group-hover:bg-white transition duration-150 ease-in-out"
             ></div>
             <!-- name -->
             {{ item.name }}
@@ -92,10 +92,10 @@
           @if (hasItems(item)) {
             <div 
               [class]="{
-                'rotate-0': !item.active,
-                'rotate-180': item.active,
-                'ease-in': !item.active,
-                'ease-out': item.active,
+                'rotate-0': !menu.open,
+                'rotate-180': isOpen(menu),
+                'ease-in': isOpen(menu),
+                'ease-out': !menu.open,
               }"
               class="transition duration-300"
             >

@@ -3,5 +3,7 @@ export type SidebarMenu = {
   icon?: string,
   route?: string,
   active?: boolean,
+  open?: boolean,
+  touched?: boolean,
   items?: SidebarMenu[]
 }

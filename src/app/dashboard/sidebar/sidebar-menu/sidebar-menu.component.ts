@@ -22,8 +22,20 @@ export class SidebarMenuComponent {
 
   constructor() {}
 
-  protected isMenuTitle(menu: SidebarMenu): boolean {
+  protected isTitle(menu: SidebarMenu): boolean {
     return _.isNil(menu.icon) && _.isNil(menu.route)
+  }
+  protected isActive(menu: SidebarMenu): boolean {
+    const active = _.defaultTo(menu.active, false)
+    const open = _.defaultTo(menu.open, false)
+    return active || open
+  }
+  protected isOpen(menu: SidebarMenu): boolean {
+    const active = _.defaultTo(menu.active, false)
+    const open = _.defaultTo(menu.open, false)
+    const touched = _.defaultTo(menu.touched, false)
+    
+    return (active && !touched) || open
   }
 
   protected click(event: Event, menu: SidebarMenu): void {

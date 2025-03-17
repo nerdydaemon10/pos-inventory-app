@@ -13,7 +13,7 @@ import { SidebarMenuComponent } from "./sidebar-menu/sidebar-menu.component";
 import { SidebarMenu } from './sidebar-menu/sidebar-menu.type';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'pos-sidebar',
   imports: [
     NgScrollbar,
     ButtonModule,
@@ -34,11 +34,11 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.sidebar.init(this.router.url)
+    this.sidebar.activate(this.router.url)
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      this.sidebar.init(event.url)
+      this.sidebar.activate(event.url)
     })
   }
   protected toggle(menu: SidebarMenu): void {
