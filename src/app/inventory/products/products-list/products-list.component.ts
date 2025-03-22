@@ -7,7 +7,7 @@ import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'pos-products-list',
-  imports: [TableModule, ButtonModule, RouterLink, BadgeModule],
+  imports: [TableModule, ButtonModule, BadgeModule],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css'
 })
