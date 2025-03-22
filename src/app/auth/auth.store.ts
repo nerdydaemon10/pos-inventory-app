@@ -57,15 +57,17 @@ export const AuthStore = signalStore(
         if (!res.success && res.code != HttpStatusCode.Unauthorized) {
           return
         }
+        
+        if (!_.isNil(res.data)) {
+          SharedPrefsService.set('user', res.data)
+        }
 
-        SharedPrefsService.set('user', res.data)
-
-        patchState(store, (state) => {
+        patchState(store, (state) => { 
           return produce(state, (draft) => {
             draft.user = res.data
             draft.login.success = res.success
-            draft.login.message = res.message
-          }) 
+            draft.login.message =  res.message
+          })
         })
       })
     },
@@ -74,6 +76,8 @@ export const AuthStore = signalStore(
       patchState(store, (state) => {
         return produce(state, (draft) => {
           draft.user = null
+          draft.login.success = false
+          draft.login.message = ""
         })
       })
     }
