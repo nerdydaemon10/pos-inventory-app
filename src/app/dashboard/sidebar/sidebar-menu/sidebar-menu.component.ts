@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
@@ -8,7 +7,7 @@ import { SidebarMenu } from './sidebar-menu.type';
 
 @Component({
   selector: 'pos-sidebar-menu',
-  imports: [CommonModule, RippleModule, RouterLink],
+  imports: [CommonModule, RippleModule],
   templateUrl: './sidebar-menu.component.html',
   styleUrl: './sidebar-menu.component.css',
 })
@@ -31,22 +30,18 @@ export class SidebarMenuComponent {
     return active || open
   }
   protected isOpen(menu: SidebarMenu): boolean {
-    const active = _.defaultTo(menu.active, false)
     const open = _.defaultTo(menu.open, false)
-    const touched = _.defaultTo(menu.touched, false)
-    
-    return (active && !touched) || open
+    return open
   }
 
   protected click(event: Event, menu: SidebarMenu): void {
     event.stopPropagation()
-
+    
     if (this.hasItems(menu)) {
       this.toggle.emit(menu)
-      return
+    } else {
+      this.navigate.emit(menu.route)
     }
-    
-    this.navigate.emit(menu.route)
   }
 
   protected hasItems(menu: SidebarMenu): boolean {

@@ -2,8 +2,8 @@ import _ from "lodash"
 import { produce } from "immer"
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals"
 
-import { SidebarMenu } from "./sidebar-menu/sidebar-menu.type"
 import { RouteHelper } from "../../core/helpers/route.helper"
+import { SidebarMenu } from "./sidebar-menu/sidebar-menu.type"
 
 export type SidebarType = {
   menus: SidebarMenu[]
@@ -19,24 +19,21 @@ const initialState: SidebarType = {
           icon: "tachometer",
           route: "",
           active: false,
-          open: false,
-          touched: false
+          open: false
         },
         {
           name: "POS/Checkout",
           icon: "cart-add",
           route: "checkout",
           active: false,
-          open: false,
-          touched: false
+          open: false
         },
         {
           name: "Sales History",
           icon: "credit-card",
-          route: "checkout",
+          route: "sales-history",
           active: false,
-          open: false,
-          touched: false
+          open: false
         }
       ]
     },
@@ -44,35 +41,30 @@ const initialState: SidebarType = {
       name: "Main Menu",
       active: false,
       open: false,
-      touched: false,
       items: [
         {
           name: "Reports & Analytics",
           icon: "bar-chart-alt-2",
           active: false,
           open: false,
-          touched: false,
           items: [
             {
               name: "Sales Reports",
-              route: "sales",
+              route: "reports/sales",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Inventory Reports",
-              route: "inventory",
+              route: "reports/inventory-reports",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Supplier Reports",
-              route: "suppliers",
+              route: "reports/suppliers",
               active: false,
-              open: false,
-              touched: false
+              open: false
             }
           ]
         },
@@ -81,87 +73,74 @@ const initialState: SidebarType = {
           icon: "grid-alt",
           active: false,
           open: false,
-          touched: false,
           items: [
             {
               name: "Products",
               route: "inventory/products",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Categories",
-              route: "categories",
+              route: "inventory/categories",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Brands",
-              route: "brands",
+              route: "inventory/brands",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Locations",
-              route: "locations",
+              route: "inventory/locations",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Batches",
-              route: "batches",
+              route: "inventory/batches",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Stocks",
-              route: "stocks",
+              route: "inventory/stocks",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Stock Movements",
-              route: "stock-movement",
+              route: "inventory/stock-movements",
               active: false,
-              open: false,
-              touched: false
+              open: false
             }
           ]
         },
         {
           name: "Supplier Management",
           icon: "package",
-          route: "damage",
           active: false,
           open: false,
-          touched: false,
           items: [
             {
               name: "Suppliers",
-              route: "suppliers",
+              route: "suppliers/suppliers",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Purchased Orders",
-              route: "purchased-orders",
+              route: "suppliers/purchased-orders",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Re-order Alerts",
               route: "re-order-alerts",
               active: false,
-              open: false,
-              touched: false
+              open: false
             }
           ]
         },
@@ -170,28 +149,24 @@ const initialState: SidebarType = {
           icon: "cog",
           active: false,
           open: false,
-          touched: false,
           items: [
             {
               name: "Users",
               route: "users",
               active: false,
               open: false,
-              touched: false
             },
             {
               name: "Roles",
-              route: "roles",
+              route: "users/roles",
               active: false,
-              open: false,
-              touched: false
+              open: false
             },
             {
               name: "Permissions",
-              route: "permissions",
+              route: "users/permissions",
               active: false,
-              open: false,
-              touched: false
+              open: false
             }
           ]
         }
@@ -209,12 +184,14 @@ const activateMenuItemsRecursively = (
   if (_.isEmpty(menu.items)) {
     return menu
   }
-
+  
   menu.items = menu.items!.map(submenu => {
-    submenu.active = submenu.route === route
+    const last = RouteHelper.last(submenu.route)
+
+    submenu.active = RouteHelper.includes(route, last)
     submenu = activateMenuItemsRecursively(submenu, route)
 
-    if (submenu.active === true) {
+    if (submenu.active === true) {  
       hasActiveItem = submenu.active
     }
 
@@ -222,6 +199,7 @@ const activateMenuItemsRecursively = (
   })
 
   menu.active = menu.active || hasActiveItem
+  menu.open = menu.active
 
   return menu
 }
@@ -240,14 +218,9 @@ const toggleMenuItemsRecursively = (menus: SidebarMenu[], menu: SidebarMenu): Si
     if (!_.isEqual(clone, menu)) {
       return undefined
     }
-
+    
     clone = produce(clone, (draft: SidebarMenu) => {
-      if (!draft.touched && draft.active) {
-        draft.open = draft.active
-      }
-      
       draft.open = !draft.open // enabled toggle when sidebar item is clicked
-      draft.touched = true
     })
 
     return clone
@@ -259,12 +232,8 @@ export const SidebarStore = signalStore(
   withState(initialState),
   withMethods((store) => ({
     activate: (url: string): void => {
-      let route = RouteHelper.transformUrl(url);
+      let route = RouteHelper.sanitize(url);
 
-      if (_.isNil(url)) {
-        return
-      }
-      
       patchState(store, (state) => {
         return produce(state, (draft) => {
           draft.menus = _.map(draft.menus, (menu) => activateMenuItemsRecursively(menu, route))

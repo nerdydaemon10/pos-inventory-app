@@ -20,7 +20,7 @@ import { SidebarMenu } from './sidebar-menu/sidebar-menu.type';
     CommonModule,
     ScrollPanelModule,
     SidebarMenuComponent
-],
+  ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
