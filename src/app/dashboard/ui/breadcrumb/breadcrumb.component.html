@@ -1,0 +1,24 @@
+<ul class="flex flex-row items-center gap-2">
+  <li class="text-muted-color">
+    <a [routerLink]="['']">
+      <span>
+        <i class="bx bxs-home"></i>
+      </span>
+    </a>
+  </li>
+  <span class="text-muted-color">
+    >
+  </span>
+  @for (route of routes; track route; let l = $last) {
+    <li class="text-sm text-muted-color font-medium">
+      <a [routerLink]="[route]">
+        {{ route }}
+      </a>
+    </li>
+    @if (!l) {
+      <span class="text-muted-color">
+        >
+      </span>
+    }
+  }
+</ul>
