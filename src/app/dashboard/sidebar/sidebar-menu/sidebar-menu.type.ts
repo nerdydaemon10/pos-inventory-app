@@ -4,6 +4,5 @@ export type SidebarMenu = {
   route?: string,
   active?: boolean,
   open?: boolean,
-  touched?: boolean,
   items?: SidebarMenu[]
 }
