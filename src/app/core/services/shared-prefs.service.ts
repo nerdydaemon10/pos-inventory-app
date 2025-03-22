@@ -6,6 +6,7 @@ export class SharedPrefsService {
       localStorage.setItem(key, JSON.stringify(value))
       return
     }
+    
     localStorage.setItem(key, value)
   }
   static get<T = any>(key: string): T | any {
