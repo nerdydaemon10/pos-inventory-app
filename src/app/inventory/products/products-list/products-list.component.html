@@ -1,27 +1,60 @@
-<p-table 
-  [value]="[]" 
-  [tableStyle]="{ 'min-width': '100%', 'margin-bottom': '1rem' }"
-  [size]="'small'"
->
+<div class="border dark:border-surface-900 rounded bg-white dark:bg-surface-900 shadow-sm p-4">
+  <h1 class="text-md font-medium">Products</h1>
+  <p class="text-sm text-muted-color mb-4">List of fuckin products, enjoy!</p>
+  <p-table 
+    [value]="products" 
+    [tableStyle]="{ 'min-width': '100%', 'margin-bottom': '1rem' }"
+    [size]="'small'"
+  >
   <ng-template #header>
       <tr>  
-          <th>SKU</th>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Brand</th>
-          <th>Category</th>
+          <th class="text-sm" pSortableColumn="sku">
+            SKU <p-sortIcon field="sku" />
+          </th>
+          <th class="text-sm" pSortableColumn="sku">
+            Code
+            <p-sortIcon field="code" />
+          </th>
+          <th class="text-sm" pSortableColumn="sku">
+            Name
+            <p-sortIcon field="name" />
+          </th>
+          <th class="text-sm" pSortableColumn="sku">
+            Brand
+            <p-sortIcon field="brand" />
+          </th>
+          <th class="text-sm" pSortableColumn="sku">
+            Category
+            <p-sortIcon field="category" />
+          </th>
+          <th class="text-sm">
+
+          </th>
       </tr>
   </ng-template>
   <ng-template #body let-product>
       <tr>
-          <td>{{ product.code }}</td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.category }}</td>
-          <td>{{ product.quantity }}</td>
+          <td class="font-semibold text-sm">{{ product.sku }}</td>
+          <td class="text-sm">{{ product.code }}</td>
+          <td class="text-sm">{{ product.name }}</td>
+          <td class="text-sm">
+            <p-badge [value]="product.brand" severity="secondary" />
+          </td>
+          <td class="text-sm">
+            <p-badge [value]="product.category" severity="secondary" />
+          </td>
+          <td class="flex flex-row gap-2">
+            <p-button 
+              size="small" 
+              label="Update" 
+            />
+            <p-button 
+              size="small" 
+              severity="secondary" 
+              label="Remove" 
+            />
+          </td>
       </tr>
   </ng-template>
 </p-table>
-<div class="flex flex-col items-center">
-  <p class="text-muted-color mb-4">No products available, you can add.</p>
-  <p-button label="Add Product" size="small" />
 </div>
