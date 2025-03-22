@@ -1,14 +1,18 @@
-<div class="flex flex-row h-full bg-surface-50 dark:bg-surface-950">
+<div class="flex flex-row h-full bg-surface-50 dark:bg-surface-950 select-none">
   <pos-sidebar class="hidden lg:flex" />
   <!-- RIGHT-SECTION -->
-  <div class="flex-1 flex flex-col">
-    <pos-header 
-      [darkMode]="app.darkMode()"
-      (darkModeToggle)="app.darkModeToggle()"
-      (logout)="logout()"
-    />
-    <main class="flex-1 flex flex-col p-4">
-      <router-outlet></router-outlet>
-    </main>
+  <div class="flex-1 flex flex-col ms-64">
+    <ng-scrollbar class="ngx-scrollbar" visibility="hover">
+      <pos-header
+        class="z-50"
+        [darkMode]="app.darkMode()"
+        (darkModeToggle)="app.darkModeToggle()"
+        (logout)="logout()"
+      />
+      <main class="flex-1 flex flex-col p-4">
+        <pos-breadcrumb class="mb-4" />
+        <router-outlet></router-outlet>
+      </main>
+    </ng-scrollbar>
   </div>
 </div>
