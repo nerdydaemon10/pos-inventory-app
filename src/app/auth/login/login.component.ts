@@ -26,7 +26,7 @@ import { DividerComponent } from '../../shared/components/divider/divider.compon
   styleUrl: './login.component.css'
 })
 export class LoginComponent { 
-  protected form!: FormGroup
+  protected readonly form!: FormGroup //late initialization
   protected readonly store = inject(AuthStore)
   protected readonly toaster = inject(ToasterStore)
 
@@ -38,6 +38,7 @@ export class LoginComponent {
       username: ['', Validators.required],
       password: ['', Validators.required]
     })
+
     effect(() => {
       if (this.login.success) {
         this.toaster.success(this.login.message)
@@ -49,7 +50,7 @@ export class LoginComponent {
   protected onSubmit(): void {
     this.store.submit(this.form.value)
   }
-
+  
   protected get login(): LoginState {
     return this.store.login()
   }
